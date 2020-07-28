@@ -1,0 +1,16 @@
+[package]
+authors = ["Alex Kreidler <alexkreidler2020@gmail.com>"]
+edition = "2018"
+name = "iribench"
+version = "0.1.0"
+
+[dependencies]
+anyhow = "*"
+criterion = "*"
+iref = "*"
+iri-string = "*"
+sophia_iri = "*"
+
+[[bench]]
+harness = false
+name = "iri_bench"
