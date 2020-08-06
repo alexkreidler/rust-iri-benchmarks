@@ -5,10 +5,11 @@ This project benchmarks the 3 major IRI ([Internationalized Resource Identifier]
 - iref
 - iri-string
 - sophia_iri
+- (I also recently found [oxiri](https://github.com/oxigraph/oxiri), which I may test in another update)
 
-IRIs are a relatively complex specification, and as strings can take up a lot of memory, especially if used in a Linked Data-type database. Some key-value databases use prefix compression to make the in-memory representations of keys smaller.
+IRIs are a [step up in complexity from regular URLs](https://www.ietf.org/rfc/rfc3987.txt), and storing and manipulating them can have a real performance cost. In a triple store or graph database, these differences in performance could be huge. Some key-value databases, for example, use prefix compression to make the in-memory representations of keys smaller.
 
-I was interested to figure out the overhead of these different libraries, as well as any differences in their API surface.
+I was interested to investigate both the performance and differences in APIs that these libraries provided.
 
 ## Behind the scenes
 
@@ -18,10 +19,6 @@ From what I've gathered, they all use a type similar to the following:
 pub struct Iri<'a> {
     scheme: Option<&'a str>,
     authority: Option<&'a str>,
-    /// NB: path complies with the following rules:
-    /// - does not contain the separators ('/')
-    /// - its first element is "" if the path starts with '/'
-    /// - its last element is "" if the path ends with a '/'
     path: Vec<&'a str>,
     query: Option<&'a str>,
     fragment: Option<&'a str>,
@@ -47,3 +44,8 @@ Although they all use a similar type, they have differences in how these are par
 Right now, only one benchmark is implemented (instantiating the various IRIs from `str`s). However, `iri-string` and `iref` are in the lead, trading places.
 
 More work to improve benchmark efficiency is required.
+
+## TODOs
+
+- Copy the generated benchmarks from my target dir to host on a static site server so other users can view
+- Maybe setup CI
